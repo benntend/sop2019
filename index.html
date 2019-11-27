@@ -14,12 +14,14 @@
       <h1 class="title">User Matching</h1>
       <form class="contact-form row">
          <div class="form-field col x-50">
-            <input id="fname" v-model="first_name" class="input-text js-input" type="text" required>
-            <label class="label" for="fname">FirstName</label>
+            <input id="fname" v-model="first_name" class="input-text js-input" type="text" required>   
+            <label v-if="first_name === '' " class="label" for="fname">FirstName </label>
+            <label v-else class="label" for="fname"></label>
          </div>
          <div class="form-field col x-50">
             <input id="lname" v-model="last_name" class="input-text js-input" type="text" required>
-            <label class="label" for="lname">Lastname</label>
+            <label v-if="last_name === '' " class="label" for="lname" >Lastname</label>
+            <label v-else class="label" for="lname"></label>
          </div>
          <div class="form-field col x-100 align-center">
             <input class="submit-btn" @click.prevent="throwData" type="submit">
@@ -73,6 +75,7 @@
                tweenedNumber: 0
             }
          },
+
          methods: {
             getPersonData() {
                axios.post('http://35.198.248.75:8000/api/get-person/', {
@@ -126,7 +129,7 @@
                   tweenedNumber: newValue
                })
             }
-         }
+         },
       })
    </script>
 
