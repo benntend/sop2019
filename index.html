@@ -14,13 +14,13 @@
       <h1 class="title">User Matching</h1>
       <form class="contact-form row">
          <div class="form-field col x-50">
-            <input id="fname" v-model="first_name" class="input-text js-input" type="text" required>   
-            <label v-if="first_name === '' " class="label" for="fname">FirstName </label>
+            <input id="fname" v-model="first_name" class="input-text js-input" type="text" required style="background: #ffffff00">
+            <label v-if="first_name === '' " class="label" for="fname" style="color: #ffffffe1; font-family: Raleway, sans-serif;">FirstName </label>
             <label v-else class="label" for="fname"></label>
          </div>
          <div class="form-field col x-50">
-            <input id="lname" v-model="last_name" class="input-text js-input" type="text" required>
-            <label v-if="last_name === '' " class="label" for="lname" >Lastname</label>
+            <input id="lname" v-model="last_name" class="input-text js-input" type="text" required style="background: #ffffff00">
+            <label v-if="last_name === '' " class="label" for="lname" style="color: #ffffffe1; font-family: Raleway, sans-serif;">Lastname</label>
             <label v-else class="label" for="lname"></label>
          </div>
          <div class="form-field col x-100 align-center">
@@ -30,13 +30,72 @@
       <br>
       <div v-show="state">
          <div>
-            <h1 style="text-align: center; font-size: 42px;"> SIMILARITY </h1>
-            <h1 style="text-align: center; font-size: 42px;">{{ animatedNumber }}%</h1>
-            <h1 style="text-align: center;">{{email}}</h1>
-            <h1 style="text-align: center;">{{phone}}</h1>
-            <h1 style="text-align: center;">{{personal_id}}</h1>
-            <h1 style="text-align: center;">{{address}}</h1>
-            <h1 style="text-align: center;">{{gender}}</h1>
+            <div class="single-chart">
+               <svg viewBox="0 0 36 36" class="circular-chart green">
+                  <path class="circle-bg" d="M18 2.0845
+                           a 15.9155 15.9155 0 0 1 0 31.831
+                           a 15.9155 15.9155 0 0 1 0 -31.831" />
+                  <path id="circle" class="circle" stroke-dasharray="60, 100" d="M18 2.0845
+                           a 15.9155 15.9155 0 0 1 0 31.831
+                           a 15.9155 15.9155 0 0 1 0 -31.831" />
+                  <text x="18" y="20.35" class="percentage">{{ animatedNumber }}%</text>
+               </svg>
+            </div>
+
+            <div class="container">
+               <table>
+                  <thead>
+                     <tr>
+                        <th></th>
+                        <th>Is Matching?</th>
+                        <th>Value</th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     <tr>
+                        <td style="background-color: #f79054; width: 22.5%">name</td>
+                        <td style="width: 20%"><img src="tick.png" style="width: 15px"></td>
+                        <td style="width: 20%">{{ first_name }}</td>
+                     </tr>
+                     <tr>
+                        <td style="background-color: #f79054; width: 22.5%">surname</td>
+                        <td style="width: 20%"><img src="tick.png" style="width: 15px"></td>
+                        <td style="width: 20%">{{ last_name }}</td>
+                     </tr>
+                     <tr>
+                        <td style="background-color: #f79054; width: 22.5%">email</td>
+                        <td style="width: 20%" v-if="email === ''"></td>
+                        <td style="width: 20%" v-else><img src="tick.png" style="width: 15px"></td>
+                        <td style="width: 20%">{{email}}</td>
+                     </tr>
+                     <tr>
+                        <td style="background-color: #f79054; width: 22.5%">phone</td>
+                        <td style="width: 20%" v-if="phone === ''"></td>
+                        <td style="width: 20%" v-else><img src="tick.png" style="width: 15px"></td>
+                        <td style="width: 20%">{{phone}}</td>
+                     </tr>
+                     <tr>
+                        <td style="background-color: #f79054; width: 22.5%">personal_id</td>
+                        <td style="width: 20%" v-if="personal_id === ''"></td>
+                        <td style="width: 20%" v-else><img src="tick.png" style="width: 15px"></td>
+                        <td style="width: 20%">{{personal_id}}</td>
+                     </tr>
+                     <tr>
+                        <td style="background-color: #f79054; width: 22.5%">address</td>
+                        <td style="width: 20%" v-if="address === ''"></td>
+                        <td style="width: 20%" v-else><img src="tick.png" style="width: 15px"></td>
+                        <td style="width: 20%">{{address}}</td>
+                     </tr>
+                     <tr>
+                        <td style="background-color: #f79054; width: 22.5%">gender</td>
+                        <td style="width: 20%" v-if="gender === ''"></td>
+                        <td style="width: 20%" v-else><img src="tick.png" style="width: 15px"></td>
+                        <td style="width: 20%">{{gender}}</td>
+                     </tr>
+                  </tbody>
+               </table>
+            </div>
+
          </div>
       </div>
       <br><br>
@@ -79,9 +138,9 @@
          methods: {
             getPersonData() {
                axios.post('http://35.198.248.75:8000/api/get-person/', {
-                     first_name: this.first_name,
-                     last_name: this.last_name
-                  })
+                  first_name: this.first_name,
+                  last_name: this.last_name
+               })
                   .then(res => {
                      console.log(res.data);
                      console.log(res.data[0]['percent']);
@@ -94,16 +153,22 @@
                      this.personal_id = res.data[0]['personal_id'];
                      this.gender = res.data[0]['gender'];
                      this.address = res.data[0]['address'];
-                  })
+
+                     let temp = String(parseFloat(res.data[0]['percent'])) + ", 100"
+                     document.getElementById('circle').setAttribute('stroke-dasharray', temp);
+
+                  },
+
+                  )
                   .catch(e => {
                      console.log(e);
                   })
             },
             throwData() {
                axios.post('http://35.198.248.75:8000/api/person-request/', {
-                     first_name: this.first_name,
-                     last_name: this.last_name
-                  })
+                  first_name: this.first_name,
+                  last_name: this.last_name
+               })
                   .then(res => {
                      console.log(res);
                      this.getPersonData();
@@ -115,7 +180,10 @@
                         title: 'Oops...',
                         text: 'There is no data of this person here.',
                      })
-                  })
+                  }),
+
+
+                  document.getElementById('circle').setAttribute('stroke-dasharray', "20, 100");
             },
          },
          computed: {
