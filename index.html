@@ -1,14 +1,16 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <title>User Matching</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
-<link rel="stylesheet" href="./style.css">
+   <meta charset="UTF-8">
+   <title>User Matching</title>
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+   <link rel="stylesheet" href="./style.css">
 
 </head>
+
 <body>
-<!-- partial:index.partial.html -->
+   <!-- partial:index.partial.html -->
    <section class="get" id="app1">
       <h1 class="title">User Matching</h1>
       <form class="contact-form row">
@@ -26,60 +28,68 @@
       </form>
 
       <div v-show="state">
-         <h1>Hello</h1>
+         <div>
+            <h1 style="text-align: center;">{{percent}}</h1>
+         </div>
       </div>
    </section>
 
-<!-- partial -->
-<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
-<script src="./script.js"></script>
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-<script>
-   var vm = new Vue({
-      el: "#app1",
-      data() {
-         return {
-            msg: 'Hello',
-            first_name: '',
-            last_name: '',
-            result: [],
-            errors: [],
-            percent: 0,
-            state: false
-         }
-      },
-      methods: {
-         throwData() {
-            axios.post('http://localhost:9090/person-service/api/person-request/', {
-               first_name: this.first_name,
-               last_name: this.last_name
-            })
-            .then(res => {
-               console.log(res);
-               console.log(res.data.companyA.length);
-               if (res.data.companyA.length == 0 || res.data.companyb.length == 0){
-                  this.errors.push("There's no person data in the record.");
-                  alert(this.errors);
-               }
-            })
-            .catch(e => {
-               console.log(e);
-               alert(e);
-            })
+   <!-- partial -->
+   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+   <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+   <script src="./script.js"></script>
+   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+   <script>
+      var vm = new Vue({
+         el: "#app1",
+         data() {
+            return {
+               msg: 'Hello',
+               first_name: '',
+               last_name: '',
+               result: [],
+               errors: [],
+               percent: 0,
+               state: false,
+               percent: ''
+            }
          },
-         fuck(){
-            axios.get('http://172.23.0.6:9090/person-service/api/companya-data/')
-            .then(res => {
-               console.log(res.data);
-            })
-            .catch(e => {
-               console.log(e);
-            })
+         methods: {
+            getPersonData() {
+               axios.post('http://35.198.248.75:8000/api/get-person/', {
+                     first_name: this.first_name,
+                     last_name: this.last_name
+                  })
+                  .then(res => {
+                     console.log(res.data);
+                     console.log(res.data[0]['percent']);
+                     this.state = true;
+                     this.percent = res.data[0]['percent'];
+                  })
+                  .catch(e => {
+                     console.log(e);
+                     alert(e);
+                  })
+            },
+            throwData() {
+               axios.post('http://35.198.248.75:8000/api/person-request/', {
+                     first_name: this.first_name,
+                     last_name: this.last_name
+                  })
+                  .then(res => {
+                     console.log(res);
+                     console.log(res.data.companyA.length);
+                     this.getPersonData();
+                  })
+                  .catch(e => {
+                     console.log(e);
+                     alert(e);
+                  })
+            },
          }
-      }
-   })
-</script>
+      })
+   </script>
 
 </body>
+
 </html>
