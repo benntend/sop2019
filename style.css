@@ -6,11 +6,18 @@
 
 html {
   height: 100%;
+  font-family: Raleway, sans-serif;
 }
 
 body {
   height: 100%;
   position: relative;
+  background: linear-gradient(45deg, #4657f7, #59ff6f);
+
+}
+
+input {
+  display: none;
 }
 
 .row {
@@ -53,7 +60,6 @@ body {
   letter-spacing: 3px;
   font-size: 36px;
   line-height: 48px;
-  padding-bottom: 48px;
 }
 
 .contact-form .form-field {
@@ -81,7 +87,7 @@ body {
 .contact-form .label {
   position: absolute;
   left: 20px;
-  bottom: 30px;
+  bottom: 11px;
   font-family: Lusitana, serif;
   font-size: 18px;
   line-height: 26px;
@@ -104,4 +110,69 @@ body {
   padding: 8px 16px;
   border: none;
   cursor: pointer;
+}
+
+
+.single-chart {
+  justify-content: space-around ;
+}
+
+.circular-chart {
+  display: block;
+  margin: 10px auto;
+  max-width: 80%;
+  max-height: 250px;
+}
+
+.circle-bg {
+  fill: none;
+  stroke: #eee;
+  stroke-width: 3.8;
+}
+
+.circle {
+  fill: none;
+  stroke-width: 2.8;
+  stroke-linecap: round;
+  animation: progress 1s ease-out forwards;
+}
+
+@keyframes progress {
+  0% {
+    stroke-dasharray: 0 100;
+  }
+}
+
+
+.circular-chart.green .circle {
+  stroke: #f79054;
+}
+
+.percentage {
+  fill: rgb(29, 29, 29);
+  font-family: sans-serif;
+  font-size: 0.5em;
+  text-anchor: middle;
+}
+
+.container{
+  padding: 20px;
+  margin-left: 10%;
+}
+
+table {
+	width: 450px;
+	border-collapse: collapse;
+}
+
+th,
+td {
+	padding: 15px;
+	background-color: rgba(255,255,255,0.8);
+	color: #000;
+}
+
+th {
+  background-color: rgb(240, 130, 96);
+	text-align: left;
 }
