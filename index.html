@@ -6,7 +6,6 @@
    <title>User Matching</title>
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
    <link rel="stylesheet" href="./style.css">
-
 </head>
 
 <body>
@@ -26,11 +25,21 @@
             <input class="submit-btn" @click.prevent="throwData" type="submit">
          </div>
       </form>
-
+      <br>
       <div v-show="state">
          <div>
-            <h1 style="text-align: center;">{{percent}}</h1>
+            <h1 style="text-align: center; font-size: 42px;">{{ animatedNumber }}%</h1>
+            <h1 style="text-align: center;">{{email}}</h1>
+            <h1 style="text-align: center;">{{phone}}</h1>
+            <h1 style="text-align: center;">{{personal_id}}</h1>
+            <h1 style="text-align: center;">{{address}}</h1>
+            <h1 style="text-align: center;">{{gender}}</h1>
          </div>
+      </div>
+      <br><br>
+      <div style="text-align: center;">
+         <a href="https://github.com/benning55/UserMatching-api"><img src="github.png" alt="github" width="10%"></a>
+         <h1>click at github pic to see this project repository.</h1>
       </div>
    </section>
 
@@ -38,6 +47,8 @@
    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
    <script src="./script.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.3/TweenMax.min.js"></script>
    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
    <script>
       var vm = new Vue({
@@ -51,7 +62,14 @@
                errors: [],
                percent: 0,
                state: false,
-               percent: ''
+               percent: 0,
+               phone: '',
+               email: '',
+               personal_id: '',
+               address: '',
+               gender: '',
+               number: 0,
+               tweenedNumber: 0
             }
          },
          methods: {
@@ -64,11 +82,17 @@
                      console.log(res.data);
                      console.log(res.data[0]['percent']);
                      this.state = true;
-                     this.percent = res.data[0]['percent'];
+                     let per = res.data[0]['percent'];
+                     this.percent = parseFloat(per);
+                     this.number = parseFloat(per);
+                     this.email = res.data[0]['email'];
+                     this.phone = res.data[0]['phone'];
+                     this.personal_id = res.data[0]['personal_id'];
+                     this.gender = res.data[0]['gender'];
+                     this.address = res.data[0]['address'];
                   })
                   .catch(e => {
                      console.log(e);
-                     alert(e);
                   })
             },
             throwData() {
@@ -78,14 +102,29 @@
                   })
                   .then(res => {
                      console.log(res);
-                     console.log(res.data.companyA.length);
                      this.getPersonData();
                   })
                   .catch(e => {
                      console.log(e);
-                     alert(e);
+                     Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'There is no data of this person here.',
+                     })
                   })
             },
+         },
+         computed: {
+            animatedNumber: function () {
+               return this.tweenedNumber.toFixed(0);
+            }
+         },
+         watch: {
+            number: function (newValue) {
+               TweenLite.to(this.$data, 0.5, {
+                  tweenedNumber: newValue
+               })
+            }
          }
       })
    </script>
