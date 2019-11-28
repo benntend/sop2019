@@ -38,7 +38,7 @@
                   <path id="circle" class="circle" stroke-dasharray="60, 100" d="M18 2.0845
                            a 15.9155 15.9155 0 0 1 0 31.831
                            a 15.9155 15.9155 0 0 1 0 -31.831" />
-                  <text x="18" y="20.35" class="percentage">{{ percent }}%</text>
+                  <text x="18" y="20.35" class="percentage">{{ animatedNumber }}%</text>
                </svg>
             </div>
 
@@ -55,12 +55,12 @@
                      <tr>
                         <td style="background-color: #f79054; width: 22.5%">name</td>
                         <td style="width: 20%"><img src="tick.png" style="width: 15px"></td>
-                        <td style="width: 20%">{{ first_name }}</td>
+                        <td style="width: 20%">{{ temp_fname }}</td>
                      </tr>
                      <tr>
                         <td style="background-color: #f79054; width: 22.5%">surname</td>
                         <td style="width: 20%"><img src="tick.png" style="width: 15px"></td>
-                        <td style="width: 20%">{{ last_name }}</td>
+                        <td style="width: 20%">{{ temp_lname }}</td>
                      </tr>
                      <tr>
                         <td style="background-color: #f79054; width: 22.5%">email</td>
@@ -131,7 +131,9 @@
                address: '',
                gender: '',
                number: 0,
-               tweenedNumber: 0
+               tweenedNumber: 0,
+               temp_fname: '',
+               temp_lname:''
             }
          },
 
@@ -153,6 +155,8 @@
                      this.personal_id = res.data[0]['personal_id'];
                      this.gender = res.data[0]['gender'];
                      this.address = res.data[0]['address'];
+                     this.temp_fname = res.data[0]['name'];
+                     this.temp_lname = res.data[0]['surname'];
 
                      let temp = String(parseFloat(res.data[0]['percent'])) + ", 100"
                      document.getElementById('circle').setAttribute('stroke-dasharray', temp);
